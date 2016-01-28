@@ -68,12 +68,13 @@ int main(int argc, char** argv) {
   ROS_INFO("Hello World!");
   ros::init(argc, argv, "laser_crop_rect");
   ros::NodeHandle nh;
+  ros::NodeHandle nh_private("~");  
 
-  nh.param<double>("xmin", xmin, -1.0);
-  nh.param<double>("xmax", xmax, 1.0);
-  nh.param<double>("ymin", ymin, -1.0);
-  nh.param<double>("ymax", ymax, 1.0);
-  nh.param<string>("frame_id", ref_frame_id, "/base_link");
+  nh_private.param<double>("xmin", xmin, -1.0);
+  nh_private.param<double>("xmax", xmax, 1.0);
+  nh_private.param<double>("ymin", ymin, -1.0);
+  nh_private.param<double>("ymax", ymax, 1.0);
+  nh_private.param<string>("frame_id", ref_frame_id, "/base_link");
   ROS_INFO_STREAM("xmin:" << xmin << " xmax:" << xmax << " ymin:" << ymin << " ymax:" << ymax
                    << " reference frame_id:" << ref_frame_id);
 
