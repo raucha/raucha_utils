@@ -1,0 +1,7 @@
+<launch>
+  <node pkg="raucha_utils" type="navsatfix_filter.py" name="navsatfix_filter">
+    <remap from="navsatfix_in" to="navsat/fix"/>
+    <remap from="navsatfix_out" to="navsat/filtered"/>
+    <param name="cov_thresh" value="25"/>
+  </node>
+</launch>
