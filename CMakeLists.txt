@@ -15,7 +15,8 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 ## System dependencies are found with CMake's conventions
-find_package(PCL REQUIRED)
+# find_package(PCL REQUIRED)
+find_package(PCL 1.2 REQUIRED)
 # find_package(Boost REQUIRED COMPONENTS system)
 
 
@@ -135,16 +136,19 @@ include_directories(
 
 ## Declare a C++ executable
 add_executable(laser_crop_rect src/laser_crop_rect.cpp)
+add_executable(pc_scan_matcher src/pc_scan_matcher.cpp)
 # add_executable(raucha_utils_node src/raucha_utils_node.cpp)
 
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 add_dependencies(laser_crop_rect ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(pc_scan_matcher ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 # add_dependencies(raucha_utils_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(laser_crop_rect ${catkin_LIBRARIES} ${PCL_LIBRARIES})
+target_link_libraries(pc_scan_matcher ${catkin_LIBRARIES} ${PCL_LIBRARIES})
 
 # target_link_libraries(raucha_utils_node
 #   ${catkin_LIBRARIES}
