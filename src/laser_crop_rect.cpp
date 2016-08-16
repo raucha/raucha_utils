@@ -18,18 +18,28 @@ void laserCallback(const sensor_msgs::LaserScan::ConstPtr& scan, tf::TransformLi
   string fid = scan->header.frame_id;
   ROS_DEBUG_STREAM("scan->frame_id:" << fid << " reference frame_id:" << ref_frame_id);
   try {
-    // tf::MessageFilterで待ってるから待ち時間は発生しないはずだけど一応
-    listener->waitForTransform(
+    // LRFの最後の光線の時刻で変換できるようになるまで待つ
+    bool is_timeout = !listener->waitForTransform(
         ref_frame_id, fid,
         scan->header.stamp + ros::Duration().fromSec(scan->ranges.size() * scan->time_increment),
-        ros::Duration(1.0));
+        ros::Duration(3.0));
+    if(is_timeout){
+      ROS_WARN("waitForTransform timeout");
+      return;
+    }
   } catch (tf::TransformException& ex) {
     ROS_WARN("%s", ex.what());
     return;
   }
+
   sensor_msgs::PointCloud cloud;
   static laser_geometry::LaserProjection projector_;
-  projector_.transformLaserScanToPointCloud(ref_frame_id, *scan, cloud, *listener);
+  try{
+    projector_.transformLaserScanToPointCloud(ref_frame_id, *scan, cloud, *listener);
+  } catch (tf::TransformException& ex) {
+    ROS_WARN("%s", ex.what());
+    return;
+  }
 
   // pclに変換できた点のLaserScanでのインデックス配列が格納されている,channelsインデックス
   int ch_i = -1;
