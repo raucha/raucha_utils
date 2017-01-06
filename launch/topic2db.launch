@@ -1,0 +1,7 @@
+<launch>
+  <node name="topic2db" pkg="for_testing" type="topic2db.py" output="screen">
+    <rosparam param="topic_names">
+      ["/test7", "/test8"]
+    </rosparam>
+  </node>
+</launch>
