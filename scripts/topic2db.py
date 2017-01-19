@@ -23,6 +23,7 @@ rosのトピックを購読し，JSONに変換してmongodbに保存
 CO = None
 
 def getDBConnection():
+    # mongoDBの認証入力
     user = os.environ.get("ROS_MONGO_USER")
     if not user:
         rospy.logwarn("環境変数 'ROS_MONGO_USER' が見つかりません．手動入力モードに移行")
@@ -32,6 +33,7 @@ def getDBConnection():
         rospy.logwarn("環境変数 'ROS_MONGO_PASS' が見つかりません．手動入力モードに移行")
         password = raw_input("Password: ")
 
+    # DBの構成についての情報
     db_address = rospy.get_param("~DB_ADDRESS", "ds061474.mlab.com:61474")
     db_name = rospy.get_param("~DB_NAME", "first_db")
     db_collection = rospy.get_param("~DB_COLLECTION", "bsen2wc")
