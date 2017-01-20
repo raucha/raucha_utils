@@ -1,0 +1,9 @@
+<launch>
+  <node name="topic2db" pkg="raucha_utils" type="topic2db.py" output="screen">
+    <rosparam param="topic_names">
+      ["/mimamorukun/dbpose"]
+    </rosparam>
+    <param name="DB_ADDRESS" value="localhost"/>
+    <param name="DB_COLLECTION" value="wc2bsen"/>
+  </node>
+</launch>

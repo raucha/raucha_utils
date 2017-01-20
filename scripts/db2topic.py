@@ -34,7 +34,7 @@ def getDBConnection():
     path = [db_address, db_name, db_collection]
     auth = [user, password]
     client = pymongo.MongoClient(
-        'mongodb://{auth[0]}:{auth[1]}@{path[0]}/{path[1]}'.format(auth=auth, path=path))
+        'mongodb://{auth[0]}:{auth[1]}@{path[0]}'.format(auth=auth, path=path))
     db = client[path[1]]
     co = db[path[2]]
     return co
