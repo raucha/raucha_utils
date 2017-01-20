@@ -1,0 +1,6 @@
+<launch>
+  <node name="db2topic" pkg="raucha_utils" type="db2topic.py" output="screen">
+    <param name="DB_ADDRESS" value="192.168.4.107" />
+    <param name="DB_COLLECTION" value="wc2bsen" />
+  </node>
+</launch>
