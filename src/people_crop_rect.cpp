@@ -15,6 +15,7 @@ ros::Publisher pub;
 
 sensor_msgs::PointCloud people2cloud(const people_msgs::People::ConstPtr& arg){
   sensor_msgs::PointCloud ret;
+  ret.header = arg->header;
   for(int i=0; i<arg->people.size(); i++){
     geometry_msgs::Point32 point;
     point.x = arg->people.at(i).position.x;
@@ -22,6 +23,7 @@ sensor_msgs::PointCloud people2cloud(const people_msgs::People::ConstPtr& arg){
     point.z = arg->people.at(i).position.z;
     ret.points.push_back(point);
   }
+  return ret;
 }
 
 void callback(const people_msgs::People::ConstPtr& scan, tf::TransformListener* listener) {
@@ -29,7 +31,7 @@ void callback(const people_msgs::People::ConstPtr& scan, tf::TransformListener* 
 
   // tfが実行できるようになるまで待つ
   string fid = scan->header.frame_id;
-  ROS_DEBUG_STREAM("scan->frame_id:" << fid << " reference frame_id:" << ref_frame_id);
+  ROS_DEBUG_STREAM("scan->frame_id:" << fid << "   reference frame_id:" << ref_frame_id);
   try {
     bool is_timeout = !listener->waitForTransform(
         ref_frame_id, fid,
@@ -49,7 +51,8 @@ void callback(const people_msgs::People::ConstPtr& scan, tf::TransformListener* 
   rawCloud = people2cloud(scan);
   sensor_msgs::PointCloud cloud;
   // "ref_frame_id"中心の座標系に変換実行
-  listener->transformPointCloud(ref_frame_id, scan->header.stamp, rawCloud, fid, cloud);
+  ROS_DEBUG_STREAM("scan->frame_id:" << rawCloud.header.frame_id << "   reference frame_id:" << ref_frame_id);
+  listener->transformPointCloud(ref_frame_id, rawCloud, cloud);
 
   // 四角形外のインデックスを記録
   vector<int> vailed_idx;
